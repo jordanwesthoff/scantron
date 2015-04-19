@@ -12,16 +12,16 @@ Housekeeping, read in image(s)
 ````
 
 #### Phase 2 
-Page Orientation
+- Page Orientation
 
 #### Phase 3
-Read bubbles for Name, UID and Additional INFO from top half of Scantron
-Write out the registered info to file or variable in workspace
+- Read bubbles for Name, UID and Additional INFO from top half of Scantron
+- Write out the registered info to file or variable in workspace
 
 #### Phase 4
-Read bubbles for all answers from bottom half of scantron
-Write out the registered info to file or variable in workspace
+- Read bubbles for all answers from bottom half of scantron
+- Write out the registered info to file or variable in workspace
 
 #### Phase 5 
-Read info from 3 and 4 and print out the name, UID and scores and statistics
-Print a pretty histogram
+- Read info from 3 and 4 and print out the name, UID and scores and statistics
+- Print a pretty histogram
