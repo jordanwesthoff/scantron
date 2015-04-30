@@ -5,11 +5,20 @@ import glob
 import ipcv
 import cv
 
-def read_in_files(pdf):
-   #os.system( 'convert answer_sheets.pdf answers_%d.tif')
+def read_in_files(pdf,blank):
 
    #convert pdf to tif
   # os.system( "convert " + pdf + " answers_%d.tif")
+  # os.system( "convert " + blank + " orig.tif")
+   original = cv2.imread('orig.tif')
+   numR, numC, numB, dtype = ipcv.dimensions(original)
+   if numB ==3:
+      original = cv2.cvtColor(original,cv.CV_BGR2GRAY)
+   
+   original[original<=200]=0
+   original[original>200]=255
+
+   cv2.imwrite('original.tif',original )
    lis = glob.glob('*.tif')
    lis = sorted(lis)
    print'lis', lis
@@ -29,9 +38,10 @@ def read_in_files(pdf):
 #      cv2.imwrite('gray%04i.tif' %count,im)
       sheets.append(im)
       count = count +1
-   return sheets
+   return sheets, original
    
 if __name__ == '__main__':
 
    filename = 'answer_sheets.pdf'
-   im = read_in_files(filename)
+   blank = 'original_scan_sheet.pdf'
+   im = read_in_files(filename,blank)
