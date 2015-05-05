@@ -6,7 +6,7 @@ def read_info(sheets, original):
    hood = numpy.ones((9,10))
    numRows, numCols, numBands, dtype = ipcv.dimensions(original)
    
-   lastName = numpy.zeros((11))
+   lastName = []
    drow = 3
    dcol = 2
    hcol = 10
@@ -26,14 +26,22 @@ def read_info(sheets, original):
        #  print 'row',row
        #  cv2.imshow('hood',hood)
        #  cv2.waitKey(600)
-      lastName[C] = numpy.argmax(letter)
+      val = numpy.max(letter[numpy.argmax(letter)])
+      print 'val',val
+      mean = numpy.mean(letter)
+      if mean - 3 < val < mean + 3:
+         lastName.append(chr(32))
+         
+      else:
+         lastName.append(chr(numpy.argmax(letter)+65))
       col = col + hcol + dcol
+   print 'lastname',lastName
   # print 'letter', letter
   # print 'row',row
   # print 'col',col
    
    
-   firstName = numpy.zeros((9))
+   firstName = [] 
    drow = 3
    dcol = 2
    hcol = 10
@@ -50,11 +58,20 @@ def read_info(sheets, original):
          row = row + drow +hrow
          if L == 6:
             row = row-1
-      firstName[C] = numpy.argmax(letter)
+      val = numpy.max(letter[numpy.argmax(letter)])
+      mean = numpy.mean(letter)
+      if mean - 3 < val < mean + 3:
+         firstName.append(chr(32))
+         
+      else:
+         firstName.append(chr(numpy.argmax(letter)+65))
+     # firstName[C] = numpy.argmax(letter)
       col = col + hcol + dcol
+   print 'firstname',firstName
    
    
-   UID = numpy.zeros((9))
+  # UID = numpy.zeros((9))
+   UID = []
    drow = 3
    dcol = 2
    hcol = 10
@@ -71,11 +88,14 @@ def read_info(sheets, original):
          row = row + drow +hrow
          if L == 6:
             row = row-1
-      UID[C] = numpy.argmax(letter)
+      UID.append(numpy.argmax(letter))
+     # UID[C] = numpy.argmax(letter)
       col = col + hcol + dcol
    
+   print 'UID',UID
 
-   additional = numpy.zeros((9))
+   #additional = numpy.zeros((9))
+   additional = []
    drow = 3
    dcol = 2
    hcol = 10
@@ -92,8 +112,10 @@ def read_info(sheets, original):
          row = row + drow +hrow
         # if L == 6:
         #    row = row-1
-      additional[C] = numpy.argmax(letter)
+      additional.append(numpy.argmax(letter))
+     # additional[C] = numpy.argmax(letter)
       col = col + hcol + dcol
+   print 'add', additional
 
    return lastName,firstName,UID,additional
 
