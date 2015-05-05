@@ -19,7 +19,7 @@ def read_in_files(pdf,blank):
    original[original>200]=255
 
    cv2.imwrite('original.tif',original )
-   lis = glob.glob('*.tif')
+   lis = glob.glob('answers*.tif')
    lis = sorted(lis)
    print'lis', lis
    count = 0
@@ -35,7 +35,7 @@ def read_in_files(pdf,blank):
          im = current
       im[im<=200]=0
       im[im>200]=255
-#      cv2.imwrite('gray%04i.tif' %count,im)
+      cv2.imwrite('black%04i.tif' %count,im)
       sheets.append(im)
       count = count +1
    return sheets, original
