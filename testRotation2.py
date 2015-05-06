@@ -2,31 +2,91 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 import ipcv
+import cv
 
 def testRotation2():
    print 'hello'
-   sheets, img2 = ipcv.read_in_files('answer_sheets.pdf','original_scan_sheet.pdf')
-   img1 = cv2.imread('black0001.tif',0)          # queryImage
+   #sheets, img2 = ipcv.read_in_files('answer_sheets.pdf','original_scan_sheet.pdf')
+   colorimg1 = cv2.imread('test0001.tif', 0)          # queryImage
+   colorimg2 = cv2.imread('test0002.tif', 0)
+   print colorimg1
+   #colorimg1 = cv2.imread('girlRotated.jpeg')
+   #colorimg2 = cv2.imread('girl.jpeg')
+
+   numRows, numCols, numBands, dataType = ipcv.dimensions(colorimg1)
+   if numBands == 3:
+      image1 = cv2.cvtColor(colorimg1, cv.CV_BGR2GRAY)
+   elif numBands == 1:
+      image1 = colorimg1
+
+   numRows2, numCols2, numBands2, dataType2 = ipcv.dimensions(colorimg2)
+   if numBands2 == 3:
+      image2 = cv2.cvtColor(colorimg2, cv.CV_BGR2GRAY)
+   elif numBands2 == 1:
+      image2 = colorimg2
+   #image1 = cv2.GaussianBlur(image1,(5,5),0)
+   #image2 = cv2.GaussianBlur(image2,(5,5),0)
+   mask = np.zeros((numRows, numCols)).astype(np.uint8)
+   #3 circles
+   #mask[690:773,19:105] = 1
+   #mask[15:100,512:603] = 1
+   #mask[700:780,490:590] = 1
+   #Last Name
+   mask[25:43,230:347] = 1
+   #3 Half Circles
+   mask[715:761,62:82] = 1
+   mask[712:776,548:568] = 1
+   mask[27:80,561:581] = 1
+   mask[375:385,146:206] = 1
+   cv2.namedWindow('mask', cv2.WINDOW_NORMAL)
+   cv2.imshow('mask', mask)
+   cv2.waitKey()
+   print 'mask dataType', mask.dtype
+   print 'img1 datatype', image1.dtype
+   print 'img2 datatype', image2.dtype
    #img2 = cv2.imread('scene.jpeg',0) # trainImage
 
-   # Initiate SIFT detector
-   orb = cv2.ORB()
+
+   #initiate SIFT detector
+   sift = cv2.SIFT()
 
    # find the keypoints and descriptors with SIFT
-   kp1, des1 = orb.detectAndCompute(img1,None)
-   kp2, des2 = orb.detectAndCompute(img2,None)
+   keypoint1, descriptor1 = sift.detectAndCompute(image1,mask)
+   keypoint2, descriptor2 = sift.detectAndCompute(image2,mask)
+   # A combo of FAST and BRIEF
+   #orb = cv2.ORB()
+   #keypoint1, descriptor1 = orb.detectAndCompute(image1,None)
+   #keypoint2, descriptor2 = orb.detectAndCompute(image2,None)
+
+   i_params = dict(algorithm=0, trees=5)
+   s_params = dict(checks=50)
+
+   flann = cv2.FlannBasedMatcher(i_params, s_params)
+   matches = flann.knnMatch(descriptor1, descriptor2, k=2)
+
+   good_matches = []
+
+   for m, n in matches:
+      if m.distance < 0.7*n.distance:
+         good_matches.append(m)
+
+   src_points = np.float32([keypoint1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
+   dst_points = np.float32([keypoint2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
+
+
 
    # create BFMatcher object
-   bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+   #bfObject = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
 
    # Match descriptors.
-   matches = bf.match(des1,des2)
+   #matches = bfObject.match(descriptor1,descriptor2)
 
    # Sort them in the order of their distance.
-   matches = sorted(matches, key = lambda x:x.distance)
+   good_matches = sorted(good_matches, key = lambda x:x.distance)
 
    # Draw first 10 matches.
-   img3 = drawMatches(img1,kp1,img2,kp2,matches)
+   image3 = drawMatches(image1,keypoint1,image2,keypoint2,good_matches)
+   cv2.imwrite('matching.tif', image3)
 
 def drawMatches(img1, kp1, img2, kp2, matches):
     """
