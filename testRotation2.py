@@ -34,10 +34,13 @@ def testRotation2():
    #Last Name
    mask[25:43,230:347] = 1
    #3 Half Circles
-   mask[715:761,62:82] = 1
-   mask[712:776,548:568] = 1
-   mask[27:80,561:581] = 1
-   mask[375:385,146:206] = 1
+   #mask[715:761,62:82] = 1
+   #mask[712:776,548:568] = 1
+   #mask[27:80,561:581] = 1
+   #mask[375:385,146:206] = 1
+   #Quarter Circle
+   mask[59:80,561:581] = 1
+
    cv2.namedWindow('mask', cv2.WINDOW_NORMAL)
    cv2.imshow('mask', mask)
    cv2.waitKey()
