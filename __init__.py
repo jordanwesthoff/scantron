@@ -7,3 +7,4 @@ from rotate import *
 from imageReg import *
 from fftCorrelation import *
 from paddingFiducials import *
+from scan_main import *
