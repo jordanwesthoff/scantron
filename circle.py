@@ -22,7 +22,7 @@ def circle(blank,answer):
    cimg = cv2.cvtColor(img,cv.CV_BGR2GRAY)
    img = cv2.cvtColor(img,cv.CV_BGR2GRAY)
    circles = cv2.HoughCircles(img,cv.CV_HOUGH_GRADIENT,1,40,
-                                     param1=50,param2=30,minRadius=7,maxRadius=24)
+                                     param1=50,param2=25,minRadius=7,maxRadius=24)
    print circles
    circles = np.uint16(np.around(circles))
    for i in circles[0,:]:
