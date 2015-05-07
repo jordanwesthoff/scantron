@@ -21,7 +21,7 @@ def paddingFiducials(answerSheet1, blankSheet1):
    #Bottom Right Fiducial
    fiducial2a = blankSheet[714:762,517:567]
    #Top Right Fiducial
-   fiducial3a = blankSheet[27:78,519:581]
+   fiducial3a = blankSheet[29:78,531:579]
    numRowsF1, numColsF1, numBandsF1, dataTypeF1 = ipcv.dimensions(fiducial1a)
    numRowsF2, numColsF2, numBandsF2, dataTypeF2 = ipcv.dimensions(fiducial2a)
    numRowsF3, numColsF3, numBandsF3, dataTypeF3 = ipcv.dimensions(fiducial3a)
@@ -82,7 +82,7 @@ if __name__ == '__main__':
    cv2.imshow('Fiducial1 Padded', fiducial1.astype(numpy.uint8))
    cv2.waitKey()
    cv2.namedWindow('Answer Sheet', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('Answer Sheet', answerSheet1)
+   cv2.imshow('Answer Sheet', fiducial3)
    cv2.imwrite('fiducial1.tif', fiducial1)
    cv2.imwrite('fiducial2.tif', fiducial2)
    cv2.imwrite('fiducial3.tif', fiducial3)
