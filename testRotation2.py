@@ -7,11 +7,11 @@ import cv
 def testRotation2():
    print 'hello'
    #sheets, img2 = ipcv.read_in_files('answer_sheets.pdf','original_scan_sheet.pdf')
-   colorimg1 = cv2.imread('test0001.tif', 0)          # queryImage
-   colorimg2 = cv2.imread('test0002.tif', 0)
-   print colorimg1
-   #colorimg1 = cv2.imread('girlRotated.jpeg')
-   #colorimg2 = cv2.imread('girl.jpeg')
+   #colorimg1 = cv2.imread('test0001.tif', 0)          # queryImage
+   #colorimg2 = cv2.imread('original.tif', 0)
+   #print colorimg1
+   colorimg1 = cv2.imread('girlRotated.jpeg')
+   colorimg2 = cv2.imread('girl.jpeg')
 
    numRows, numCols, numBands, dataType = ipcv.dimensions(colorimg1)
    if numBands == 3:
@@ -31,7 +31,7 @@ def testRotation2():
    #mask[690:773,19:105] = 1
    #mask[15:100,512:603] = 1
    #mask[700:780,490:590] = 1
-   #Last Name
+   #First Name
    mask[25:43,230:347] = 1
    #3 Half Circles
    #mask[715:761,62:82] = 1
@@ -39,7 +39,13 @@ def testRotation2():
    #mask[27:80,561:581] = 1
    #mask[375:385,146:206] = 1
    #Quarter Circle
-   mask[59:80,561:581] = 1
+   #mask[59:80,561:581] = 1
+   #Additional Information
+   mask[190:203,367:480] = 1
+   #University ID
+   mask[24:38,364:484] = 1
+   #Last
+   mask[25:35,70:92] = 1
 
    cv2.namedWindow('mask', cv2.WINDOW_NORMAL)
    cv2.imshow('mask', mask)
@@ -49,13 +55,13 @@ def testRotation2():
    print 'img2 datatype', image2.dtype
    #img2 = cv2.imread('scene.jpeg',0) # trainImage
 
-
    #initiate SIFT detector
    sift = cv2.SIFT()
 
    # find the keypoints and descriptors with SIFT
-   keypoint1, descriptor1 = sift.detectAndCompute(image1,mask)
-   keypoint2, descriptor2 = sift.detectAndCompute(image2,mask)
+   keypoint1, descriptor1 = sift.detectAndCompute(image1,None)
+   keypoint2, descriptor2 = sift.detectAndCompute(image2,None)
+   print 'keypoint1', keypoint1
    # A combo of FAST and BRIEF
    #orb = cv2.ORB()
    #keypoint1, descriptor1 = orb.detectAndCompute(image1,None)
@@ -76,7 +82,8 @@ def testRotation2():
    src_points = np.float32([keypoint1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
    dst_points = np.float32([keypoint2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
 
-
+   print 'test', src_points
+   print 'original', dst_points
 
    # create BFMatcher object
    #bfObject = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
@@ -88,9 +95,18 @@ def testRotation2():
    good_matches = sorted(good_matches, key = lambda x:x.distance)
 
    # Draw first 10 matches.
-   image3 = drawMatches(image1,keypoint1,image2,keypoint2,good_matches)
+   image3 = drawMatches(image1,keypoint1,image2,keypoint2,good_matches[:10])  
+   #image3 = drawMatches(image1,src_points.astype(np.uint8),image2, dst_points(np.uint8),good_matches[:10])
    cv2.imwrite('matching.tif', image3)
 
+   #Create Affine Transform
+   M = cv2.getAffineTransform(src_points[0:3], dst_points[0:3])
+   print M
+   dst = cv2.warpAffine(image1, M, (numRows, numCols))
+   print np.min(dst), np.max(dst)
+   cv2.namedWindow('rotatedIm', cv2.WINDOW_AUTOSIZE)
+   cv2.imshow('rotatedIm', dst.astype(np.uint8))
+   cv2.waitKey()
 def drawMatches(img1, kp1, img2, kp2, matches):
     """
     My own implementation of cv2.drawMatches as OpenCV 2.4.9
