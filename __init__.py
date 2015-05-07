@@ -6,5 +6,7 @@ from circle import *
 from rotate import *
 from imageReg import *
 from fftCorrelation import *
+from fftCorrelation2 import *
 from paddingFiducials import *
 from scan_main import *
+from register import *
