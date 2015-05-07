@@ -17,7 +17,7 @@ def read_in_files(pdf,blank):
    
    original[original<=200]=0
    original[original>200]=255
-
+   print original.shape
    cv2.imwrite('original.tif',original )
    lis = glob.glob('answers*.tif')
    lis = sorted(lis)
