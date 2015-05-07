@@ -24,13 +24,14 @@ def rotate(blank, answer):
    print 'image:rows,cols:', numRowsi, numColsi
    cv2.waitKey()
 
+   return image
 
 if __name__ == '__main__':
    import cv2
    import numpy as np
    im1 = 'original.tif'
-   im2 = 'gray0000.tif'
+   im2 = 'gray0005.tif'
    blank = cv2.imread(im1)
    answer = cv2.imread(im2)
    rotated = ipcv.rotate(blank,answer)
-
+   cv2.imwrite('registered0005.tif', rotated)
