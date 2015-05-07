@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import ipcv
 import cv
-def circle(blank,answer):
+def circle(blank):
    
    numRows,numCols,numBands, dtype = ipcv.dimensions(blank)
    img = cv2.medianBlur(blank,1)
@@ -16,7 +16,8 @@ def circle(blank,answer):
 
    circles = cv2.HoughCircles(img,cv.CV_HOUGH_GRADIENT,1,40,
                                      param1=50,param2=20,minRadius=7,maxRadius=24)
-   print circles
+#   print circles
+   '''
    circles = np.uint16(np.around(circles))
    for i in circles[0,:]:
     #  draw the outer circle
@@ -30,7 +31,8 @@ def circle(blank,answer):
       cv2.imshow('detected circles',cimg)
       cv2.waitKey(0)
       cv2.destroyAllWindows()
-      
+   '''
+   return circles      
       
 if __name__ == '__main__':
    import numpy
