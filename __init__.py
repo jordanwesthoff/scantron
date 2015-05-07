@@ -6,3 +6,4 @@ from circle import *
 from rotate import *
 from imageReg import *
 from fftCorrelation import *
+from paddingFiducials import *

@@ -72,15 +72,19 @@ def paddingFiducials(answerSheet1, blankSheet1):
    print 'fiducial3 shape:', fiducial3.shape
    print 'answerSheet shape:', answerSheet.shape
 
-   return fiducial1
+   return fiducial1, fiducial2, fiducial3
 
 if __name__ == '__main__':
    answerSheet1 = cv2.imread('gray0001.tif')
    blankSheet1 = cv2.imread('original.tif')
-   fiducial1 = paddingFiducials(answerSheet1, blankSheet1)
+   fiducial1, fiducial2, fiducial3 = paddingFiducials(answerSheet1, blankSheet1)
    cv2.namedWindow('Fiducial1 Padded', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('Fiducial1 Padded', fiducial1.astype(numpy.uint8))
    cv2.waitKey()
    cv2.namedWindow('Answer Sheet', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('Answer Sheet', answerSheet1)
+   cv2.imwrite('fiducial1.tif', fiducial1)
+   cv2.imwrite('fiducial2.tif', fiducial2)
+   cv2.imwrite('fiducial3.tif', fiducial3)
+
    action = ipcv.flush()
