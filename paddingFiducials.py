@@ -75,7 +75,8 @@ def paddingFiducials(answerSheet1, blankSheet1):
    return fiducial1, fiducial2, fiducial3
 
 if __name__ == '__main__':
-   answerSheet1 = cv2.imread('gray0001.tif')
+   #answerSheet1 = cv2.imread('gray0001.tif')
+   answerSheet1 = cv2.imread('test0002rot.tif')
    blankSheet1 = cv2.imread('original.tif')
    fiducial1, fiducial2, fiducial3 = paddingFiducials(answerSheet1, blankSheet1)
    cv2.namedWindow('Fiducial1 Padded', cv2.WINDOW_AUTOSIZE)
