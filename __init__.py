@@ -3,3 +3,4 @@ from dimensions import *
 from read_info import *
 from grading import *
 from circle import *
+from rotate import *
