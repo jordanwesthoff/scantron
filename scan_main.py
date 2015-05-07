@@ -4,7 +4,8 @@ import cv2
 
 def scan_main(pdf,original):
    answers,blank = ipcv.read_in_files(pdf,original)
-
+   for r in range(answers):
+       
 
 
 if __name__ == '__main__':

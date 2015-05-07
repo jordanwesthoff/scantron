@@ -12,6 +12,7 @@ def read_in_files(pdf,blank):
   # os.system( "convert " + blank + " orig.tif")
    original = cv2.imread('orig.tif')
    numR, numC, numB, dtype = ipcv.dimensions(original)
+   print original.shape
    if numB ==3:
       original = cv2.cvtColor(original,cv.CV_BGR2GRAY)
    
