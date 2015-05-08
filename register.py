@@ -2,8 +2,8 @@ import cv2
 import numpy
 import ipcv
 
-def register(fid1,fid2,fid3,image):
-   numRows, numCols, numBands, dtype = ipcv.dimensions(image) 
+def register(fid1,fid2,fid3,image, blank):
+   numRows, numCols, numBands, dtype = ipcv.dimensions(blank) 
    blankfid1 = numpy.array([738,60])
    blankfid2 = numpy.array([738,542])
    blankfid3 = numpy.array([53,556])
@@ -18,11 +18,11 @@ def register(fid1,fid2,fid3,image):
    fidpts = numpy.array([[fid1row,fid1col],[fid2row,fid2col],[fid3row,fid3col]]).astype(numpy.float32)
    print fidpts.shape
    M = cv2.getAffineTransform(blankpts,fidpts)
-   im = cv2.warpAffine(image,M,(numCols,numRows))
+   im = cv2.warpAffine(image,M,(numCols,numRows), borderMode = cv2.BORDER_TRANSPARENT)
    cv2.namedWindow('rot',cv2.WINDOW_AUTOSIZE)
    cv2.imshow('rot',im.astype(numpy.uint8))
    cv2.waitKey()
-   cv2.imwrite('rot0008.tif', im.astype(numpy.uint8))
+   #cv2.imwrite('rot0008.tif', im.astype(numpy.uint8))
    
 
 if __name__ == '__main__':
@@ -30,21 +30,23 @@ if __name__ == '__main__':
    fid1 = 'fiducial1.tif'
    fid2 = 'fiducial2.tif'
    fid3 = 'fiducial3.tif'
-   #image = 'test0002rot.tif'
-   image = 'black0008.tif'
+   image = 'test0002rot.tif'
+   #image = 'black0003.tif'
    image2 = 'test0004.tif'
    image3 = 'test0000.tif'
    image4 = 'test0008.tif'
+   blank = 'original.tif'
   
    fid1 = cv2.imread(fid1)
    fid2 = cv2.imread(fid2)
    fid3 = cv2.imread(fid3)
    image = cv2.imread(image)
+   blank = cv2.imread(blank)
    image2 = cv2.imread(image2)
    image3 = cv2.imread(image3)
    image4 = cv2.imread(image4)
    print numpy.average(image), numpy.average(image2), numpy.average(image3), numpy.average(image4)
-   regIM = ipcv.register(fid1,fid2,fid3,image)
+   regIM = ipcv.register(fid1,fid2,fid3,image, blank)
 
 
 
