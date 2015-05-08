@@ -22,6 +22,7 @@ def register(fid1,fid2,fid3,image):
    cv2.namedWindow('rot',cv2.WINDOW_AUTOSIZE)
    cv2.imshow('rot',im.astype(numpy.uint8))
    cv2.waitKey()
+   cv2.imwrite('rot0000.tif', im.astype(numpy.uint8))
    
 
 if __name__ == '__main__':
@@ -29,13 +30,20 @@ if __name__ == '__main__':
    fid1 = 'fiducial1.tif'
    fid2 = 'fiducial2.tif'
    fid3 = 'fiducial3.tif'
-  # image = 'test0002rot.tif'
-   image = 'test0002.tif'
-   
+   #image = 'test0002rot.tif'
+   image = 'black0000.tif'
+   image2 = 'test0004.tif'
+   image3 = 'test0000.tif'
+   image4 = 'test0008.tif'
+  
    fid1 = cv2.imread(fid1)
    fid2 = cv2.imread(fid2)
    fid3 = cv2.imread(fid3)
    image = cv2.imread(image)
+   image2 = cv2.imread(image2)
+   image3 = cv2.imread(image3)
+   image4 = cv2.imread(image4)
+   print numpy.average(image), numpy.average(image2), numpy.average(image3), numpy.average(image4)
    regIM = ipcv.register(fid1,fid2,fid3,image)
 
 
