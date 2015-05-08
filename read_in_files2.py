@@ -6,12 +6,12 @@ import ipcv
 import cv
 import numpy
 
-def read_in_files(pdf,blank):
+def read_in_files2(pdf,blank):
 
    #convert pdf to tif
   # os.system( "convert " + pdf + " answers_%d.tif")
   # os.system( "convert " + blank + " orig.tif")
-   original = cv2.imread('orig.tif')
+   original = cv2.imread('original_300.tif')
    numR, numC, numB, dtype = ipcv.dimensions(original)
    print original.shape
    if numB ==3:
@@ -20,8 +20,8 @@ def read_in_files(pdf,blank):
    original[original<=200]=0
    original[original>200]=255
    print original.shape
-   #cv2.imwrite('original.tif',original )
-   lis = glob.glob('answers*.tif')
+   cv2.imwrite('original300dpi.tif',original )
+   lis = glob.glob('answers_rot*.tif')
    lis = sorted(lis)
    print'lis', lis
    count = 0
@@ -38,9 +38,9 @@ def read_in_files(pdf,blank):
       if numpy.average(im) > 230:
          im[im<=200]=0
          im[im>200]=255
-         cv2.imwrite('black%04i.tif' %count,im)
+         cv2.imwrite('blackDPI%04i.tif' %count,im)
       else:
-         cv2.imwrite('black%04i.tif' %count,im)
+         cv2.imwrite('blackDPI%04i.tif' %count,im)
       sheets.append(im)
       count = count +1
    return sheets, original
@@ -49,4 +49,4 @@ if __name__ == '__main__':
 
    filename = 'answer_sheets.pdf'
    blank = 'original_scan_sheet.pdf'
-   im = read_in_files(filename,blank)
+   im = read_in_files2(filename,blank)
