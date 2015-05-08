@@ -22,7 +22,7 @@ def register(fid1,fid2,fid3,image):
    cv2.namedWindow('rot',cv2.WINDOW_AUTOSIZE)
    cv2.imshow('rot',im.astype(numpy.uint8))
    cv2.waitKey()
-   cv2.imwrite('rot0000.tif', im.astype(numpy.uint8))
+   cv2.imwrite('rot0008.tif', im.astype(numpy.uint8))
    
 
 if __name__ == '__main__':
@@ -31,7 +31,7 @@ if __name__ == '__main__':
    fid2 = 'fiducial2.tif'
    fid3 = 'fiducial3.tif'
    #image = 'test0002rot.tif'
-   image = 'black0000.tif'
+   image = 'black0008.tif'
    image2 = 'test0004.tif'
    image3 = 'test0000.tif'
    image4 = 'test0008.tif'
