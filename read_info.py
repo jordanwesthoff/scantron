@@ -26,14 +26,17 @@ def read_info(sheets, original):
        #  print 'row',row
        #  cv2.imshow('hood',hood)
        #  cv2.waitKey(600)
-      val = numpy.max(letter[numpy.argmax(letter)])
-      print 'val',val
+      val = (letter[numpy.argmin(letter)])
+      print 'lastval',val
       mean = numpy.mean(letter)
-      if mean - 3 < val < mean + 3:
+      print 'mean',mean
+     # if mean - 3 < val < mean + 3:
+     #    lastName.append(chr(32))
+      if mean - 9000 < val < mean + 9000:
          lastName.append(chr(32))
          
       else:
-         lastName.append(chr(numpy.argmax(letter)+65))
+         lastName.append(chr(numpy.argmin(letter)+65))
       col = col + hcol + dcol
    print 'lastname',lastName
   # print 'letter', letter
@@ -58,13 +61,13 @@ def read_info(sheets, original):
          row = row + drow +hrow
          if L == 6:
             row = row-1
-      val = numpy.max(letter[numpy.argmax(letter)])
+      val = (letter[numpy.argmin(letter)])
       mean = numpy.mean(letter)
-      if mean - 3 < val < mean + 3:
+      if mean - 9000 < val < mean + 9000:
          firstName.append(chr(32))
          
       else:
-         firstName.append(chr(numpy.argmax(letter)+65))
+         firstName.append(chr(numpy.argmin(letter)+65))
      # firstName[C] = numpy.argmax(letter)
       col = col + hcol + dcol
    print 'firstname',firstName
@@ -88,12 +91,17 @@ def read_info(sheets, original):
          row = row + drow +hrow
          if L == 6:
             row = row-1
-      UID.append(numpy.argmax(letter))
+      mean = numpy.mean(letter)
+      val = (letter[numpy.argmin(letter)])
+      if mean - 9000 < val < mean + 9000:
+         UID.append(chr(32))
+      else:
+         UID.append(numpy.argmin(letter))
      # UID[C] = numpy.argmax(letter)
       col = col + hcol + dcol
    
    print 'UID',UID
-
+   
    #additional = numpy.zeros((9))
    additional = []
    drow = 3
@@ -112,20 +120,37 @@ def read_info(sheets, original):
          row = row + drow +hrow
         # if L == 6:
         #    row = row-1
-      additional.append(numpy.argmax(letter))
+      mean = numpy.mean(letter)
+      val = (letter[numpy.argmin(letter)])
+      if mean - 8000 < val < mean + 8000:
+         UID.append(chr(32))
+      else:
+         additional.append(numpy.argmin(letter))
      # additional[C] = numpy.argmax(letter)
       col = col + hcol + dcol
    print 'add', additional
 
    return lastName,firstName,UID,additional
-
+   
 if __name__ == '__main__':
    
    import cv2
    import ipcv
  #  import scantron
-   filename = 'answer_sheets.pdf'
-   blank = 'original_scan_sheets.pdf'
-   sheets,original = ipcv.scantron.read_in_files(filename, blank)
+  # filename = 'rot0000.tif'
+   filename = 'rot0001.tif'
+ #  filename = 'rot0002.tif'
+ #  filename = 'rot0003.tif'
+ #  filename = 'rot0004.tif'
+ #  filename = 'rot0005.tif'
+ #  filename = 'rot0006.tif'
+  # filename = 'rot0007.tif'
+#   filename = 'rot0008.tif'
+  # filename = 'answer_sheets.pdf'
+   blank = 'original.tif'
+  # blank = 'original_scan_sheets.pdf'
+#   sheets,original = ipcv.scantron.read_in_files(filename, blank)
+   original = cv2.imread(filename)
+   sheets = cv2.imread(blank)
    test = read_info(sheets,original)
 
