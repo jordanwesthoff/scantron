@@ -137,8 +137,15 @@ if __name__ == '__main__':
    import cv2
    import ipcv
  #  import scantron
-   filename = 'rot0003.tif'
-  # filename = 'rot0001.tif'
+  # filename = 'rot0000.tif'
+ #  filename = 'rot0001.tif'
+  # filename = 'rot0002.tif'
+ #  filename = 'rot0003.tif'
+ #  filename = 'rot0004.tif'
+ #  filename = 'rot0005.tif'
+ #  filename = 'rot0006.tif'
+   filename = 'rot0007.tif'
+#   filename = 'rot0008.tif'
   # filename = 'answer_sheets.pdf'
    blank = 'original.tif'
   # blank = 'original_scan_sheets.pdf'
