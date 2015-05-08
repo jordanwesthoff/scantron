@@ -5,7 +5,10 @@ import cv2
 def read_info(sheets, original):
    hood = numpy.ones((9,10))
    numRows, numCols, numBands, dtype = ipcv.dimensions(original)
-   
+   original = original - sheets 
+   cv2.namedWindow('orig',cv2.WINDOW_AUTOSIZE)
+   cv2.imshow('orig', original)
+   cv2.waitKey()
    lastName = []
    drow = 3
    dcol = 2
@@ -138,8 +141,8 @@ if __name__ == '__main__':
    import ipcv
  #  import scantron
   # filename = 'rot0000.tif'
-   filename = 'rot0001.tif'
- #  filename = 'rot0002.tif'
+   #filename = 'rot0001.tif'
+   filename = 'rot0002.tif'
  #  filename = 'rot0003.tif'
  #  filename = 'rot0004.tif'
  #  filename = 'rot0005.tif'
