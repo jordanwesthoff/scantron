@@ -63,5 +63,5 @@ def fftCorrelation2(fiducial1C, blankSheetC):
 
 if __name__ == '__main__':
    fiducial1C = cv2.imread('fiducial1.tif')
-   blankSheetC = cv2.imread('original.tif')
+   blankSheetC = cv2.imread('test0003.tif')
    fftCorrelation2(fiducial1C,blankSheetC)

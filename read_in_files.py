@@ -4,6 +4,7 @@ import glob
 #import scantron 
 import ipcv
 import cv
+import numpy
 
 def read_in_files(pdf,blank):
 
@@ -19,7 +20,7 @@ def read_in_files(pdf,blank):
    original[original<=200]=0
    original[original>200]=255
    print original.shape
-   cv2.imwrite('original.tif',original )
+   #cv2.imwrite('original.tif',original )
    lis = glob.glob('answers*.tif')
    lis = sorted(lis)
    print'lis', lis
@@ -34,9 +35,12 @@ def read_in_files(pdf,blank):
          im = cv2.cvtColor(current,cv.CV_BGR2GRAY)
       else:
          im = current
-      im[im<=200]=0
-      im[im>200]=255
-      cv2.imwrite('black%04i.tif' %count,im)
+      if numpy.average(im) > 230:
+         im[im<=200]=0
+         im[im>200]=255
+         cv2.imwrite('black%04i.tif' %count,im)
+      else:
+         cv2.imwrite('black%04i.tif' %count,im)
       sheets.append(im)
       count = count +1
    return sheets, original
