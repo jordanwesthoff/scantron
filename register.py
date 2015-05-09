@@ -12,7 +12,22 @@ def register(fid1,fid2,fid3,image, blank):
    fid1row, fid1col = ipcv.fftCorrelation2(fid1,image)
    fid2row, fid2col = ipcv.fftCorrelation2(fid2,image)
    fid3row, fid3col = ipcv.fftCorrelation2(fid3,image)
-   
+
+   print 'fid1row', fid1row
+   print 'fid2row', fid2row
+   print 'fid2col', fid2col
+   print 'fid3col', fid3col
+   numRowsIm, numColsIm, numBandsIm, dataTypeIm = ipcv.dimensions(image)
+   #Rotated 180 degrees
+   if fid2row - 25 < fid1row < fid2row + 25 and fid3col - 25 < fid2col < fid3col + 25 and fid2row < numRowsIm/2 and fid3col < numColsIm/2:
+      print 'hello'
+      image = numpy.rot90(image, k=2)
+      cv2.namedWindow('image', cv2.WINDOW_AUTOSIZE)
+      cv2.imshow('image', image)
+      fid1row, fid1col = ipcv.fftCorrelation2(fid1,image)
+      fid2row, fid2col = ipcv.fftCorrelation2(fid2,image)
+      fid3row, fid3col = ipcv.fftCorrelation2(fid3,image)
+
    blankpts = numpy.array([blankfid1,blankfid2,blankfid3]).astype(numpy.float32)
    print blankpts.shape
    fidpts = numpy.array([[fid1row,fid1col],[fid2row,fid2col],[fid3row,fid3col]]).astype(numpy.float32)
@@ -30,8 +45,8 @@ if __name__ == '__main__':
    fid1 = 'fiducial1.tif'
    fid2 = 'fiducial2.tif'
    fid3 = 'fiducial3.tif'
-   image = 'test0002rot.tif'
-   #image = 'black0003.tif'
+   #image = 'test0002rot.tif'
+   image = 'black0008.tif'
    image2 = 'test0004.tif'
    image3 = 'test0000.tif'
    image4 = 'test0008.tif'
@@ -41,6 +56,7 @@ if __name__ == '__main__':
    fid2 = cv2.imread(fid2)
    fid3 = cv2.imread(fid3)
    image = cv2.imread(image)
+   image = numpy.rot90(image, k=2)
    blank = cv2.imread(blank)
    image2 = cv2.imread(image2)
    image3 = cv2.imread(image3)

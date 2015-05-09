@@ -33,7 +33,7 @@ def fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC):
    elif numBands3 == 1:
       fiducial3 = fiducial3C
 
-   freqFid1 = numpy.fft.fft2(fiducial1)
+   freqFid1 = numpy.fft.fft2(fiducial3)
    freqBlank = numpy.fft.fft2(blankSheet)
 
    magFid1 = numpy.absolute(freqFid1)
@@ -78,5 +78,5 @@ if __name__ == '__main__':
    fiducial1C = cv2.imread('fiducial1.tif')
    fiducial2C = cv2.imread('fiducial2.tif')
    fiducial3C = cv2.imread('fiducial3.tif')
-   blankSheetC = cv2.imread('black0001.tif')
+   blankSheetC = cv2.imread('test0002rot.tif')
    fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC)
