@@ -5,10 +5,10 @@ import cv2
 def read_info(sheets, original):
    hood = numpy.ones((9,10))
    numRows, numCols, numBands, dtype = ipcv.dimensions(original)
-   original = original - sheets 
-   cv2.namedWindow('orig',cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('orig', original)
-   cv2.waitKey()
+   original = numpy.absolute(original - sheets)
+#   cv2.namedWindow('orig',cv2.WINDOW_AUTOSIZE)
+#   cv2.imshow('orig', original)
+#   cv2.waitKey()
    lastName = []
    drow = 3
    dcol = 2
@@ -21,6 +21,11 @@ def read_info(sheets, original):
       row = 51
       for L  in range(26):
          hood = original[row:row + hrow,col:col +hcol]
+         print 'hood', numpy.mean(hood)
+#         if numpy.mean(hood) < 180:
+#            total = 0
+#         else:
+#            total = 255
          total = numpy.sum(hood)
          letter[L] = total
          row = row + drow +hrow
@@ -29,6 +34,7 @@ def read_info(sheets, original):
        #  print 'row',row
        #  cv2.imshow('hood',hood)
        #  cv2.waitKey(600)
+      val = (letter[numpy.argmin(letter)])
       val = (letter[numpy.argmin(letter)])
       print 'lastval',val
       mean = numpy.mean(letter)
@@ -140,20 +146,21 @@ if __name__ == '__main__':
    import cv2
    import ipcv
  #  import scantron
-  # filename = 'rot0000.tif'
-   #filename = 'rot0001.tif'
+#   filename = 'rot0000.tif'
+ #  filename = 'rot0001.tif'
    filename = 'rot0002.tif'
- #  filename = 'rot0003.tif'
- #  filename = 'rot0004.tif'
- #  filename = 'rot0005.tif'
- #  filename = 'rot0006.tif'
-  # filename = 'rot0007.tif'
+#   filename = 'rot0003.tif'
+#   filename = 'rot0004.tif'
+#   filename = 'rot0005.tif'
+#   filename = 'rot0006.tif'
+ #  filename = 'rot0007.tif'
 #   filename = 'rot0008.tif'
   # filename = 'answer_sheets.pdf'
    blank = 'original.tif'
   # blank = 'original_scan_sheets.pdf'
 #   sheets,original = ipcv.scantron.read_in_files(filename, blank)
    original = cv2.imread(filename)
+  # original = cv2.imread(blank)
    sheets = cv2.imread(blank)
    test = read_info(sheets,original)
 
