@@ -20,8 +20,10 @@ def register(fid1,fid2,fid3,image, blank):
    fid3row, fid3col = ipcv.fftCorrelation2(fid3,image)
 
    print 'fid1row', fid1row
+   print 'fid1col', fid1col
    print 'fid2row', fid2row
    print 'fid2col', fid2col
+   print 'fid2row', fid2row
    print 'fid3col', fid3col
    '''
    numRowsIm, numColsIm, numBandsIm, dataTypeIm = ipcv.dimensions(image)
@@ -48,7 +50,7 @@ def register(fid1,fid2,fid3,image, blank):
    cv2.imshow('rot',regIm.astype(numpy.uint8))
    cv2.waitKey()
 
-   cv2.imwrite('reg0000.tif', regIm.astype(numpy.uint8))
+   cv2.imwrite('reg0002.tif', regIm.astype(numpy.uint8))
 
    return regIm
 if __name__ == '__main__':
@@ -67,7 +69,7 @@ if __name__ == '__main__':
    fid2 = cv2.imread(fid2)
    fid3 = cv2.imread(fid3)
    image = cv2.imread(image)
-   image = numpy.rot90(image, k=2)
+   #image = numpy.rot90(image, k=2)
    blank = cv2.imread(blank)
    image2 = cv2.imread(image2)
    image3 = cv2.imread(image3)

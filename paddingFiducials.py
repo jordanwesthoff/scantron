@@ -106,7 +106,7 @@ def paddingFiducials(answerSheet1, blankSheet1):
 
 if __name__ == '__main__':
    #answerSheet1 = cv2.imread('gray0001.tif')
-   answerSheet1 = cv2.imread('gray0001.tif')
+   answerSheet1 = cv2.imread('black0002.tif')
    #############FOR HIGH RES##############
    #blankSheet1 = cv2.imread('original300dpi.tif')
    #############FOR LOW RES##############
