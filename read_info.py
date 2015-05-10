@@ -61,7 +61,7 @@ def read_info(sheets, original):
   # print 'row',row
   # print 'col',col
    
-   ''' 
+
    firstName = [] 
    drow = 3
    dcol = 2
@@ -149,14 +149,14 @@ def read_info(sheets, original):
    print 'add', additional
 
    return lastName,firstName,UID,additional
-   '''
+
 if __name__ == '__main__':
    
    import cv2
    import ipcv
  #  import scantron
 #   filename = 'rot0000.tif'
-   filename = 'rot0001.tif'
+   filename = 'reg0000.tif'
 #   filename = 'rot0002.tif'
 #   filename = 'rot0003.tif'
 #   filename = 'rot0004.tif'

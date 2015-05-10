@@ -33,7 +33,7 @@ def fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC):
    elif numBands3 == 1:
       fiducial3 = fiducial3C
 
-   freqFid1 = numpy.fft.fft2(fiducial1)
+   freqFid1 = numpy.fft.fft2(fiducial3)
    freqBlank = numpy.fft.fft2(blankSheet)
 
    magFid1 = numpy.absolute(freqFid1)
@@ -66,6 +66,7 @@ def fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC):
    cv2.namedWindow('displayIm', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('displayIm', displayIm)
    cv2.waitKey()
+   cv2.imwrite('dotsInCir3.tif', displayIm)
    '''
    fftFid1 = numpy.fft.ifftshift(centerFreqFid1)
    fftBlank = numpy.fft.ifftshift(centerFreqBlank)
@@ -78,5 +79,5 @@ if __name__ == '__main__':
    fiducial1C = cv2.imread('fiducial1.tif')
    fiducial2C = cv2.imread('fiducial2.tif')
    fiducial3C = cv2.imread('fiducial3.tif')
-   blankSheetC = cv2.imread('black0001.tif')
+   blankSheetC = cv2.imread('blackDPI0001.tif')
    fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC)
