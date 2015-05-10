@@ -191,15 +191,38 @@ def subtraction(newIm, newIm2):
    subtracted = numpy.abs(newIm2 - newIm)
    subtracted = (255 - subtracted)
    numberRows, numberColumns, numberBands, dataType = ipcv.dimensions(subtracted)
-   """for row in range(numberRows):
-      for column in range(numberColumns):
-         if subtracted[row, column] == 0:
-	    subtracted[row, column] = 255
-	 if subtracted[row, column] == 255:
-	    subtracted[row, column] = 0"""
   
    return subtracted
 
+def convolution(subtracted, threshold = .99): 
+   numberRows, numberColumns, numberBands, dataType = ipcv.dimensions(subtracted)
+   response = numpy.zeros((numberRows, numberColumns))
+   numIncorrect = numpy.zeros((numberRows, numberColumns))
+   histogram = numpy.zeros((25, 1))
+   box = numpy.zeros((12, 12))
+   
+   subtracted[subtracted <= 200] = 0
+   subtracted[subtracted > 200] = 255
+
+   subtracted = cv2.cvtColor(subtracted, cv.CV_BGR2GRAY)
+	 
+   #applying 2D filter
+   #For questions 1-25 (first column)
+   column = 72
+   newIm = scantron
+   for answer in range(5): 
+      row = 385 
+      for question in range(25):
+         response[:, :] = (cv2.filter2D(subtracted, -1, box))         
+         #if response is less than threshold a match does not occur
+         numIncorrect[response[:, :] < threshold] = 0
+         #if response is greater than/equal to the threshold, a match occurs
+         numIncorrect[response[:, :] >= threshold] = 1
+	 histogram = numpy.sum(numIncorrect)
+         row = row + 12
+      column = column + 12 
+   print histogram
+   return histogram    
 
 
 if __name__ == '__main__':
@@ -208,8 +231,8 @@ if __name__ == '__main__':
    import ipcv
    import cv2
    
-   key = 'rot0001.tif'
-   scantron = 'rot0005.tif' 
+   key = 'rot0007.tif'
+   scantron = 'rot0008.tif' 
    
    scantron = cv2.imread(scantron, cv2.CV_LOAD_IMAGE_UNCHANGED)
    cv2.namedWindow('filename', cv2.WINDOW_AUTOSIZE)
@@ -224,6 +247,7 @@ if __name__ == '__main__':
    newIm = grading(scantron)
    newIm2 = answers(key)
    subtracted = subtraction(newIm, newIm2)
+   histogram = convolution(subtracted, threshold = .99)
 
    cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('subtracted', subtracted)
