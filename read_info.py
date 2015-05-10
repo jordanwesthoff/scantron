@@ -1,14 +1,17 @@
 import ipcv
 import numpy
 import cv2
+import cv
 
 def read_info(sheets, original):
+ #  original = cv2.cvtColor(original,cv.CV_BGR2GRAY)
+ #  sheets = cv2.cvtColor(sheets,cv.CV_BGR2GRAY)
    hood = numpy.ones((9,10))
    numRows, numCols, numBands, dtype = ipcv.dimensions(original)
-   original = original - sheets 
-   cv2.namedWindow('orig',cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('orig', original)
-   cv2.waitKey()
+#   original = numpy.absolute(original - sheets)
+#   cv2.namedWindow('orig',cv2.WINDOW_AUTOSIZE)
+#   cv2.imshow('orig', original)
+#   cv2.waitKey()
    lastName = []
    drow = 3
    dcol = 2
@@ -17,10 +20,20 @@ def read_info(sheets, original):
    col = 72
    cv2.namedWindow('hood')
    letter = numpy.zeros((26,1))
+#   im,threshold = ipcv.otsu_threshold(original,255, verbose=False)
+#   print 'thresh', threshold
    for C in range(11):
       row = 51
       for L  in range(26):
          hood = original[row:row + hrow,col:col +hcol]
+       #  print 'hood', numpy.mean(hood)
+        # if numpy.mean(hood) < 180:
+ #        im,threshold = ipcv.otsu_threshold(hood,255, verbose=False)
+         #print 'thresh', threshold
+#         if numpy.mean(hood) < threshold:
+#            total = 0
+#         else:
+#            total = 255
          total = numpy.sum(hood)
          letter[L] = total
          row = row + drow +hrow
@@ -30,10 +43,12 @@ def read_info(sheets, original):
        #  cv2.imshow('hood',hood)
        #  cv2.waitKey(600)
       val = (letter[numpy.argmin(letter)])
-      print 'lastval',val
+      val = (letter[numpy.argmin(letter)])
+    #  print 'lastval',val
       mean = numpy.mean(letter)
-      print 'mean',mean
+    #  print 'mean',mean
      # if mean - 3 < val < mean + 3:
+      #if mean - threshold < val < mean + threshold:
      #    lastName.append(chr(32))
       if mean - 9000 < val < mean + 9000:
          lastName.append(chr(32))
@@ -46,7 +61,7 @@ def read_info(sheets, original):
   # print 'row',row
   # print 'col',col
    
-   
+   ''' 
    firstName = [] 
    drow = 3
    dcol = 2
@@ -134,26 +149,27 @@ def read_info(sheets, original):
    print 'add', additional
 
    return lastName,firstName,UID,additional
-   
+   '''
 if __name__ == '__main__':
    
    import cv2
    import ipcv
  #  import scantron
-  # filename = 'rot0000.tif'
-   #filename = 'rot0001.tif'
-   filename = 'rot0002.tif'
- #  filename = 'rot0003.tif'
- #  filename = 'rot0004.tif'
- #  filename = 'rot0005.tif'
- #  filename = 'rot0006.tif'
-  # filename = 'rot0007.tif'
+#   filename = 'rot0000.tif'
+   filename = 'rot0001.tif'
+#   filename = 'rot0002.tif'
+#   filename = 'rot0003.tif'
+#   filename = 'rot0004.tif'
+#   filename = 'rot0005.tif'
+#   filename = 'rot0006.tif'
+ #  filename = 'rot0007.tif'
 #   filename = 'rot0008.tif'
   # filename = 'answer_sheets.pdf'
    blank = 'original.tif'
   # blank = 'original_scan_sheets.pdf'
 #   sheets,original = ipcv.scantron.read_in_files(filename, blank)
    original = cv2.imread(filename)
+  # original = cv2.imread(blank)
    sheets = cv2.imread(blank)
    test = read_info(sheets,original)
 
