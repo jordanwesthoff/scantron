@@ -2,6 +2,7 @@ import ipcv
 import numpy
 import cv
 import cv2
+import matplotlib.pyplot
 
 def grading(scantron): 
 
@@ -194,7 +195,7 @@ def subtraction(newIm, newIm2):
   
    return subtracted
 
-def convolution(subtracted, threshold = .99): 
+def convolution(subtracted, threshold = 99): 
    numberRows, numberColumns, numberBands, dataType = ipcv.dimensions(subtracted)
    response = numpy.zeros((numberRows, numberColumns))
    numIncorrect = numpy.zeros((numberRows, numberColumns))
@@ -218,11 +219,11 @@ def convolution(subtracted, threshold = .99):
          numIncorrect[response[:, :] < threshold] = 0
          #if response is greater than/equal to the threshold, a match occurs
          numIncorrect[response[:, :] >= threshold] = 1
-	 histogram = numpy.sum(numIncorrect)
          row = row + 12
-      column = column + 12 
+      column = column + 12
+   histogram = numpy.sum(numIncorrect) 
    print histogram
-   return histogram    
+   return 0, histogram    
 
 
 if __name__ == '__main__':
@@ -251,13 +252,23 @@ if __name__ == '__main__':
 
    cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('subtracted', subtracted)
-   cv2.waitKey()
+   #cv2.waitKey()
    
    cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('gradedKey', newIm)
-   cv2.waitKey()
-   
-   
+   #cv2.waitKey()
+     
    cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('graded', newIm2)
-   cv2.waitKey()
+   #cv2.waitKey()
+
+   # Display the results to the user
+   maximum = numpy.amax(histogram) + 1
+   matplotlib.pyplot.figure()
+   matplotlib.pyplot.xlabel('choice')
+   matplotlib.pyplot.ylabel('Count')  
+   matplotlib.pyplot.xlim([0, len(histogram)])
+   matplotlib.pyplot.ylim([0, maximum])
+   matplotlib.pyplot.plot(histogram, color='b')
+   matplotlib.pyplot.suptitle('Number of wrong answers', fontsize=14, fontweight='bold')
+   matplotlib.pyplot.show()
