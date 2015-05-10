@@ -252,15 +252,18 @@ if __name__ == '__main__':
 
    cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('subtracted', subtracted)
-   #cv2.waitKey()
+   cv2.waitKey()
+   cv2.imwrite('subtracted.tif', subtracted)
    
    cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('gradedKey', newIm)
-   #cv2.waitKey()
+   cv2.waitKey()
+   cv2.imwrite('gradedKey.tif', newIm)
      
    cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('graded', newIm2)
-   #cv2.waitKey()
+   cv2.waitKey()
+   cv2.imwrite('graded.tif', newIm2)
 
    # Display the results to the user
    maximum = numpy.amax(histogram) + 1
