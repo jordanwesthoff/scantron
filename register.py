@@ -2,9 +2,9 @@ import cv2
 import numpy
 import ipcv
 
-def register(fid1,fid2,fid3,image, blank):
+def register(fid1row, fid1col, fid2row, fid2col, fid3row, fid3col, blank1row, blank1col, blank2row, blank2col, blank3row, blank3col, image, blank):
    numRows, numCols, numBands, dtype = ipcv.dimensions(blank)
-
+   '''
    blank1row, blank1col = ipcv.fftCorrelation2(fid1,blank)
    blank2row, blank2col = ipcv.fftCorrelation2(fid2,blank)
    blank3row, blank3col = ipcv.fftCorrelation2(fid3,blank)
@@ -33,7 +33,7 @@ def register(fid1,fid2,fid3,image, blank):
    print 'fid2col', fid2col
    print 'fid3row', fid3row
    print 'fid3col', fid3col
-   '''
+   
    numRowsIm, numColsIm, numBandsIm, dataTypeIm = ipcv.dimensions(image)
    #Rotated 180 degrees
    if fid2row - 25 < fid1row < fid2row + 25 and fid3col - 25 < fid2col < fid3col + 25 and fid2row < numRowsIm/2 and fid3col < numColsIm/2:
@@ -53,11 +53,11 @@ def register(fid1,fid2,fid3,image, blank):
    #print fidpts.shape
    M = cv2.getAffineTransform(blankpts,fidpts)
    regIm = cv2.warpAffine(image,M,(numCols,numRows), borderMode = cv2.BORDER_TRANSPARENT)
-   
+   '''
    cv2.namedWindow('rot',cv2.WINDOW_AUTOSIZE)
    cv2.imshow('rot',regIm.astype(numpy.uint8))
    cv2.waitKey()
-
+   '''
    #cv2.imwrite('reg0007.tif', regIm.astype(numpy.uint8))
 
    return regIm
@@ -83,8 +83,8 @@ if __name__ == '__main__':
    image3 = cv2.imread(image3)
    image4 = cv2.imread(image4)
    print numpy.average(image), numpy.average(image2), numpy.average(image3), numpy.average(image4)
-   regIm = ipcv.register(fid1, fid2, fid3, image, blank)
-   #regIm = ipcv.register(fid1row, fid1col, fid2row, fid2col, fid3row, fid3col, image, blank)
+   #regIm = ipcv.register(fid1, fid2, fid3, image, blank)
+   regIm = ipcv.register(fid1row, fid1col, fid2row, fid2col, fid3row, fid3col, blank1row, blank1col, blank2row, blank2col, blank3row, blank3col, image, blank)
 
 
 

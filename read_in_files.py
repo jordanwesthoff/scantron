@@ -13,17 +13,14 @@ def read_in_files(pdf,blank):
   # os.system( "convert " + blank + " orig.tif")
    original = cv2.imread('orig.tif')
    numR, numC, numB, dtype = ipcv.dimensions(original)
-   print original.shape
    if numB ==3:
       original = cv2.cvtColor(original,cv.CV_BGR2GRAY)
    
    original[original<=200]=0
    original[original>200]=255
-   print original.shape
    #cv2.imwrite('original.tif',original )
    lis = glob.glob('answers*.tif')
    lis = sorted(lis)
-   print'lis', lis
    count = 0
    sheets = []
    for im in range(len(lis) ):
