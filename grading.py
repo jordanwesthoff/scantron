@@ -197,47 +197,39 @@ def subtraction(newIm, newIm2):
 
 def convolution(subtracted, threshold = .9): 
    numberRows, numberColumns, numberBands, dataType = ipcv.dimensions(subtracted)
-   response = numpy.zeros((numberRows, numberColumns))
-   numIncorrect = numpy.zeros((numberRows, numberColumns))
-   #histogram = numpy.zeros((25,1))
-   box = numpy.zeros((12, 12))
 
-   subtracted = cv2.cvtColor(subtracted, cv.CV_BGR2GRAY)   
-   subtracted[subtracted <= 200] = 0
-   subtracted[subtracted > 200] = 255
-   cv2.imwrite('subtractedIm.tif', subtracted)
+   answerRegion = numpy.zeros((300, 60))
+   kernel = numpy.zeros((12,12))
+   neighborhood = numpy.ones((12, 60))
+     
+   answerRegion = answerRegion * 1.0
+   kernel = kernel * 1.0
+   
+   answerRegion = subtracted[numberRows-407:numberRows-107, numberColumns-540:numberColumns-480]
+   cv2.imshow('region', answerRegion)
+   
+   numberRowsR, numberColumnsR, numberBandsR, dataType = ipcv.dimensions(answerRegion)
+   
+   if numberBandsR == 3:
+      answerRegion = cv2.cvtColor(answerRegion,cv.CV_BGR2GRAY)
 
-   box = box * 1.0 
-   subtracted = subtracted * 1.0 
+   answerRegion[answerRegion <= 200] = 0
+   answerRegion[answerRegion > 200] = 255
    
-   maxCount = numpy.max(subtracted)
+   #cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
+   count = 0
+   for row in range(numberRowsR):
+      neighborhood = answerRegion[row : row + 12, numberColumns-540:numberColumns-480]
+      #cv2.imshow('hood', neighborhood)
+      #cv2.waitKey(400)
+      if numpy.mean(neighborhood) >= 200: 
+	 #neighborhood[row : row + 12, column : column + 12] = 0
+	 count = count + 1
+      row = row + 12   
    
-   subtracted = (maxCount - subtracted) / maxCount
-   box = (maxCount - box) / maxCount
-	 
-   #applying 2D filter
-   #For questions 1-25 (first column)
-   for row in range(numberRows):
-      for column in range(numberColumns):
-         if row < 385 or column < 72:
-	    response = 0
-	 else:
-	    response = cv2.filter2D(subtracted, -1, box)
-         #if response is less than the threshold, a match does not occur    	  
-         numIncorrect[response < threshold] = 0
-         #if response is greater than/equal to the threshold, a match occurs
-         numIncorrect[response >= threshold] = 1
-   print numIncorrect
-         
-   """response = (cv2.filter2D(subtracted, -1, box))
-   print numpy.max(response)       
-   #if response is less than threshold a match does not occur
-   numIncorrect[response < threshold] = 0
-   #if response is greater than/equal to the threshold, a match occurs
-   numIncorrect[response >= threshold] = 1
-   histogram = numpy.sum(numIncorrect) 
-   print histogram"""
-   return numIncorrect    
+   print count         
+  
+   return count    
 
 
 if __name__ == '__main__':
@@ -246,10 +238,10 @@ if __name__ == '__main__':
    import ipcv
    import cv2
    
-   key = 'rot0007.tif'
-   scantron = 'rot0008.tif' 
+   key = 'rot0000.tif'
+   scantron = 'rot0001.tif' 
    
-   scantron = cv2.imread(scantron, cv2.CV_LOAD_IMAGE_UNCHANGED)
+   """scantron = cv2.imread(scantron, cv2.CV_LOAD_IMAGE_UNCHANGED)
    cv2.namedWindow('filename', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('filename', scantron)
    #cv2.waitKey()
@@ -257,17 +249,17 @@ if __name__ == '__main__':
    key = cv2.imread(key, cv2.CV_LOAD_IMAGE_UNCHANGED)
    cv2.namedWindow('key', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('key', key)
-   #cv2.waitKey()
+   #cv2.waitKey()"""
    
    newIm = grading(scantron)
    newIm2 = answers(key)
    subtracted = subtraction(newIm, newIm2)
-   numIncorrect = convolution(subtracted, threshold = .9)
+   count = convolution(subtracted, threshold = .9)
 
-   cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
+   """cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('subtracted', subtracted)
    cv2.waitKey()
-   #cv2.imwrite('subtracted.tif', subtracted)
+   cv2.imwrite('subtracted.tif', subtracted)
    
    cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('gradedKey', newIm)
@@ -277,7 +269,7 @@ if __name__ == '__main__':
    cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('graded', newIm2)
    cv2.waitKey()
-   #cv2.imwrite('graded.tif', newIm2)
+   #cv2.imwrite('graded.tif', newIm2)"""
 
    """# Display the results to the user
    maximum = numpy.amax(histogram) + 1
