@@ -271,7 +271,7 @@ def convolution(subtracted, threshold = .9):
    
 def finalGrade(count):
    
-   numberQuestions = 25 * 1.0 
+   numberQuestions = 50 * 1.0 
    numberRight = count * 1.0
    print numberRight 
    
