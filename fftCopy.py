@@ -40,7 +40,7 @@ def fftCorrelation(fiducial1C, blankSheetC):
    
    numberRows, numberColumns, numberBands, dataType1 = ipcv.dimensions(blankSheet)
    numIncorrect = numpy.zeros((numberRows, numberColumns))
-   threshold = 0.9999999999999997226
+   threshold = 0.9999999999999955
    #
    numIncorrect[dispCorrSpat < threshold] = 0
    #if response is greater than/equal to the threshold, a match occurs

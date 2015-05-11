@@ -17,7 +17,7 @@ def grading(scantron):
       row = 385 
       for question in range(25):
          neighborhood = scantron[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm[row : row + 12, column : column + 12] = 255
@@ -31,7 +31,7 @@ def grading(scantron):
       row = 385 
       for question in range(25):
          neighborhood = scantron[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm[row : row + 12, column : column + 12] = 255
@@ -45,7 +45,7 @@ def grading(scantron):
       row = 385 
       for question in range(25):
          neighborhood = scantron[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm[row : row + 12, column : column + 12] = 255
@@ -59,7 +59,7 @@ def grading(scantron):
       row = 385 
       for question in range(25):
          neighborhood = scantron[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm[row : row + 12, column : column + 12] = 255
@@ -73,7 +73,7 @@ def grading(scantron):
       row = 385 
       for question in range(25):
          neighborhood = scantron[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm[row : row + 12, column : column + 12] = 255
@@ -87,7 +87,7 @@ def grading(scantron):
       row = 385 
       for question in range(25):
          neighborhood = scantron[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm[row : row + 12, column : column + 12] = 255
@@ -109,7 +109,7 @@ def answers(key):
       row = 385 
       for question in range(25):
          neighborhood = key[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm2[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm2[row : row + 12, column : column + 12] = 255
@@ -123,7 +123,7 @@ def answers(key):
       row = 385 
       for question in range(25):
          neighborhood = key[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm2[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm2[row : row + 12, column : column + 12] = 255
@@ -137,7 +137,7 @@ def answers(key):
       row = 385 
       for question in range(25):
          neighborhood = key[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm2[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm2[row : row + 12, column : column + 12] = 255
@@ -151,7 +151,7 @@ def answers(key):
       row = 385 
       for question in range(25):
          neighborhood = key[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm2[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm2[row : row + 12, column : column + 12] = 255
@@ -165,7 +165,7 @@ def answers(key):
       row = 385 
       for question in range(25):
          neighborhood = key[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm2[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm2[row : row + 12, column : column + 12] = 255
@@ -179,7 +179,7 @@ def answers(key):
       row = 385 
       for question in range(25):
          neighborhood = key[row : row + 12, column : column + 12]
-         if numpy.mean(neighborhood) < 185:
+         if numpy.mean(neighborhood) < 190:
 	    newIm2[row : row + 12, column : column + 12] = 0
 	 else:
 	    newIm2[row : row + 12, column : column + 12] = 255
@@ -195,59 +195,90 @@ def subtraction(newIm, newIm2):
   
    return subtracted
 
-def convolution(subtracted, threshold = .000001): 
+def convolution(subtracted, threshold = .9): 
    numberRows, numberColumns, numberBands, dataType = ipcv.dimensions(subtracted)
-   response = numpy.zeros((numberRows, numberColumns))
-   numIncorrect = numpy.zeros((numberRows, numberColumns))
-   #histogram = numpy.zeros((25,1))
-   box = numpy.zeros((12, 12))
 
-   subtracted = cv2.cvtColor(subtracted, cv.CV_BGR2GRAY)   
-   subtracted[subtracted <= 200] = 0
-   subtracted[subtracted > 200] = 255
-   subtracted[0:380, :] = 255
-   cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('subtracted', subtracted)
+   answerRegion = numpy.zeros((300, 60))
+   kernel = numpy.zeros((12,12))
+   neighborhood = numpy.ones((12, 60))
+     
+   answerRegion = answerRegion * 1.0
+   kernel = kernel * 1.0
+   
+   answerRegion = subtracted[numberRows-407:numberRows-107, numberColumns-540:numberColumns-480]
+   cv2.imshow('region', answerRegion)
+   
+   numberRowsR, numberColumnsR, numberBandsR, dataType = ipcv.dimensions(answerRegion)
+   
+   if numberBandsR == 3:
+      answerRegion = cv2.cvtColor(answerRegion,cv.CV_BGR2GRAY)
+
+   answerRegion[answerRegion <= 200] = 0
+   answerRegion[answerRegion > 200] = 255
+   
+   count = 0
+   #cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
+   #for row in range(numberRowsR):
+   for row in range(25):
+      row = row * 12
+      neighborhood = answerRegion[row : row + 12, 0:numberColumnsR]
+      #cv2.imshow('hood', neighborhood)
+      #cv2.waitKey(300)
+      print neighborhood.shape
+      if numpy.mean(neighborhood) >= 254:
+	 count = count + 1
+         print count
+      else:
+         count = count + 0
+      row = row + 12           
+   print count
+   count1 = count
+   
+   #column 2
+   answerRegion = subtracted[numberRows-407:numberRows-107, numberColumns-464:numberColumns-404]
+   cv2.imshow('region', answerRegion)
    cv2.waitKey()
-   #
-   cv2.imwrite('subtractedIm.tif', subtracted)
-
-   box = box * 1.0 
-   subtracted = subtracted * 1.0 
    
-   maxCount = numpy.max(subtracted)
+   numberRowsR, numberColumnsR, numberBandsR, dataType = ipcv.dimensions(answerRegion)
    
-   subtracted = (maxCount - subtracted) / maxCount
-   box = (maxCount - box) / maxCount
-   print 'box', box
-	 
-   #applying 2D filter
-   #For questions 1-25 (first column)
-   #for row in range(numberRows):
-      #for column in range(numberColumns):
-         #if row < 385 or column < 72:
-	    #response = 0
-            #print 'response before:', response
-	 #else:
-   response = cv2.filter2D(subtracted, -1, box)
-   print 'response after:', response
-   #if response is less than the threshold, a match does not occur    	  
-   numIncorrect[response < threshold] = 0
-   #if response is greater than/equal to the threshold, a match occurs
-   numIncorrect[response >= threshold] = 1
-   print numIncorrect
-   totalIncorrect = numpy.sum(numIncorrect)
-   print 'totalIncorrect', totalIncorrect    
-   """response = (cv2.filter2D(subtracted, -1, box))
-   print numpy.max(response)       
-   #if response is less than threshold a match does not occur
-   numIncorrect[response < threshold] = 0
-   #if response is greater than/equal to the threshold, a match occurs
-   numIncorrect[response >= threshold] = 1
-   histogram = numpy.sum(numIncorrect) 
-   print histogram"""
-   return numIncorrect    
+   if numberBandsR == 3:
+      answerRegion = cv2.cvtColor(answerRegion,cv.CV_BGR2GRAY)
 
+   answerRegion[answerRegion <= 200] = 0
+   answerRegion[answerRegion > 200] = 255
+   
+   count = 0
+   #cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
+   for row in range(25):
+      row = row * 12
+      neighborhood = answerRegion[row : row + 12, 0:numberColumnsR]
+      #cv2.imshow('hood', neighborhood)
+      #cv2.waitKey(300)
+      print neighborhood.shape
+      if numpy.mean(neighborhood) >= 254:
+	 count = count + 1
+         print count
+      else:
+         count = count + 0
+      row = row + 12          
+   print count
+   count2 = count
+   
+   count = count1 + count2 
+   print count
+   
+   return count    
+   
+def finalGrade(count):
+   
+   numberQuestions = 50 * 1.0 
+   numberRight = count * 1.0
+   print numberRight 
+   
+   percent = (numberRight / numberQuestions) * 100
+   
+   print percent
+   return percent
 
 if __name__ == '__main__':
 
@@ -255,38 +286,39 @@ if __name__ == '__main__':
    import ipcv
    import cv2
    
-   key = 'rot0007.tif'
-   scantron = 'rot0008.tif' 
+   key = 'rot0000.tif'
+   scantron = 'rot0001.tif' 
    
    scantron = cv2.imread(scantron, cv2.CV_LOAD_IMAGE_UNCHANGED)
-   cv2.namedWindow('filename', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('filename', scantron)
+   #cv2.namedWindow('filename', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('filename', scantron)
    #cv2.waitKey()
    
    key = cv2.imread(key, cv2.CV_LOAD_IMAGE_UNCHANGED)
-   cv2.namedWindow('key', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('key', key)
+   #cv2.namedWindow('key', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('key', key)
    #cv2.waitKey()
    
    newIm = grading(scantron)
    newIm2 = answers(key)
    subtracted = subtraction(newIm, newIm2)
-   numIncorrect = convolution(subtracted, threshold = .9)
+   count = convolution(subtracted, threshold = .9)
+   percent = finalGrade(count)
 
-   cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('subtracted', subtracted)
-   cv2.waitKey()
+   #cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('subtracted', subtracted)
+   #cv2.waitKey()
    #cv2.imwrite('subtracted.tif', subtracted)
    
-   cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('gradedKey', newIm)
-   cv2.waitKey()
+   #cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('gradedKey', newIm)
+   #cv2.waitKey()
    #cv2.imwrite('gradedKey.tif', newIm)
      
-   cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('graded', newIm2)
-   cv2.waitKey()
-   #cv2.imwrite('graded.tif', newIm2)
+   #cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('graded', newIm2)
+   #cv2.waitKey()
+   #cv2.imwrite('graded.tif', newIm2)"""
 
    """# Display the results to the user
    maximum = numpy.amax(histogram) + 1

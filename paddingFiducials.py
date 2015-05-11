@@ -100,9 +100,11 @@ def paddingFiducials(answerSheet1, blankSheet1):
    elif (numRowsA-numColsA) % 2 == 0:
       blankSheet = numpy.pad(blankSheet, ((0,0),(pad1,pad1)), 'constant', constant_values=((maxCount, maxCount),(maxCount,maxCount)))
 
-   cv2.imwrite('paddedBlank.tif', blankSheet)
+   #cv2.imwrite('paddedBlank.tif', blankSheet)
+   fiducials = numpy.dstack([fiducial1, fiducial2, fiducial3])
+   print fiducials.shape
 
-   return fiducial1, fiducial2, fiducial3, answerSheet
+   return fiducials, answerSheet, blankSheet
 
 if __name__ == '__main__':
    #answerSheet1 = cv2.imread('gray0001.tif')
@@ -111,7 +113,8 @@ if __name__ == '__main__':
    #blankSheet1 = cv2.imread('original300dpi.tif')
    #############FOR LOW RES##############
    blankSheet1 = cv2.imread('original.tif')
-   fiducial1, fiducial2, fiducial3, answerSheet = paddingFiducials(answerSheet1, blankSheet1)
+   fiducial1, fiducial2, fiducial3, answerSheet, blankSheet = paddingFiducials(answerSheet1, blankSheet1)
+   '''
    cv2.namedWindow('Fiducial1 Padded', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('Fiducial1 Padded', fiducial1.astype(numpy.uint8))
    cv2.waitKey()
@@ -121,5 +124,5 @@ if __name__ == '__main__':
    cv2.imwrite('fiducial2.tif', fiducial2)
    cv2.imwrite('fiducial3.tif', fiducial3)
    cv2.imwrite('answerSheet1.tif', answerSheet)
-
+   '''
    action = ipcv.flush()

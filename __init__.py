@@ -15,3 +15,8 @@ from register import *
 from gradingCopy import *
 from paddingCopy import *
 from fftCopy import *
+from paddingAnswers import *
+from paddingFid1 import *
+from paddingFid2 import *
+from paddingFid3 import *
+from gradingCopy import *

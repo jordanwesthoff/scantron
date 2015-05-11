@@ -6,8 +6,6 @@ def fftCorrelation2(fiducial1C, blankSheetC):
    
    numRows, numCols, numBands, dataType = ipcv.dimensions(blankSheetC)
    numRows1, numCols1, numBands1, dataType1 = ipcv.dimensions(fiducial1C)
-   print 'blank bands:', numBands
-   print 'fiducial1 bands:', numBands1
 
    if numBands == 3:
       blankSheet = cv2.cvtColor(blankSheetC, cv.CV_BGR2GRAY)
@@ -16,7 +14,7 @@ def fftCorrelation2(fiducial1C, blankSheetC):
 
    if numBands1 == 3:
       fiducial1 = cv2.cvtColor(fiducial1C, cv.CV_BGR2GRAY)
-   elif numBands2 == 1:
+   elif numBands1 == 1:
       fiducial1 = fiducial1C
 
 
@@ -45,7 +43,6 @@ def fftCorrelation2(fiducial1C, blankSheetC):
    locationMax = numpy.argmax(corrSpat)
    rowLoc, colLoc = numpy.unravel_index(locationMax, (numRows, numCols))
    displayIm = cv2.merge((blankSheet, blankSheet, blankSheet))
-   print rowLoc, colLoc
 
    displayIm[rowLoc - 1:rowLoc+2, colLoc-1:colLoc+2, 2] = 0
    displayIm[rowLoc-1:rowLoc+2, colLoc-1:colLoc+2, 0:1] = 255
