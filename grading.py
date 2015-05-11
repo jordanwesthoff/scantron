@@ -216,19 +216,20 @@ def convolution(subtracted, threshold = .9):
    answerRegion[answerRegion <= 200] = 0
    answerRegion[answerRegion > 200] = 255
    
-   #cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
    count = 0
+   #cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
    for row in range(numberRowsR):
-      neighborhood = answerRegion[row : row + 12, numberColumns-540:numberColumns-480]
+      row = row * 12
+      neighborhood = answerRegion[row : row + 12, 0:numberColumnsR]
       #cv2.imshow('hood', neighborhood)
-      #cv2.waitKey(400)
-      if numpy.mean(neighborhood) >= 200: 
-	 #neighborhood[row : row + 12, column : column + 12] = 0
+      #cv2.waitKey(300)
+      print neighborhood.shape
+      if numpy.mean(neighborhood) >= 254: 
 	 count = count + 1
-      row = row + 12   
-   
-   print count         
-  
+      else:
+         count = count + 0
+      row = row + 12           
+   print count
    return count    
 
 
@@ -241,34 +242,34 @@ if __name__ == '__main__':
    key = 'rot0000.tif'
    scantron = 'rot0001.tif' 
    
-   """scantron = cv2.imread(scantron, cv2.CV_LOAD_IMAGE_UNCHANGED)
-   cv2.namedWindow('filename', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('filename', scantron)
+   scantron = cv2.imread(scantron, cv2.CV_LOAD_IMAGE_UNCHANGED)
+   #cv2.namedWindow('filename', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('filename', scantron)
    #cv2.waitKey()
    
    key = cv2.imread(key, cv2.CV_LOAD_IMAGE_UNCHANGED)
-   cv2.namedWindow('key', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('key', key)
-   #cv2.waitKey()"""
+   #cv2.namedWindow('key', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('key', key)
+   #cv2.waitKey()
    
    newIm = grading(scantron)
    newIm2 = answers(key)
    subtracted = subtraction(newIm, newIm2)
    count = convolution(subtracted, threshold = .9)
 
-   """cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('subtracted', subtracted)
-   cv2.waitKey()
-   cv2.imwrite('subtracted.tif', subtracted)
+   #cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('subtracted', subtracted)
+   #cv2.waitKey()
+   #cv2.imwrite('subtracted.tif', subtracted)
    
-   cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('gradedKey', newIm)
-   cv2.waitKey()
+   #cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('gradedKey', newIm)
+   #cv2.waitKey()
    #cv2.imwrite('gradedKey.tif', newIm)
      
-   cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
-   cv2.imshow('graded', newIm2)
-   cv2.waitKey()
+   #cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
+   #cv2.imshow('graded', newIm2)
+   #cv2.waitKey()
    #cv2.imwrite('graded.tif', newIm2)"""
 
    """# Display the results to the user
