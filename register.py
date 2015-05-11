@@ -50,7 +50,7 @@ def register(fid1,fid2,fid3,image, blank):
    cv2.imshow('rot',regIm.astype(numpy.uint8))
    cv2.waitKey()
 
-   cv2.imwrite('reg0002.tif', regIm.astype(numpy.uint8))
+   cv2.imwrite('reg0007.tif', regIm.astype(numpy.uint8))
 
    return regIm
 if __name__ == '__main__':
