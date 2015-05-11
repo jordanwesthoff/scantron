@@ -52,7 +52,7 @@ if __name__ == '__main__':
    #blankSheet1 = cv2.imread('original300dpi.tif')
    #############FOR LOW RES##############
    blankSheet1 = numpy.zeros((12,12))
-   answerSheet, blankSheet = paddingFiducials(answerSheet1, blankSheet1)
+   answerSheet, blankSheet = paddingFiducials(answerSheet1[385:704,72:133], blankSheet1)
    cv2.namedWindow('Fiducial1 Padded', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('Fiducial1 Padded', blankSheet.astype(numpy.uint8))
    cv2.waitKey()
