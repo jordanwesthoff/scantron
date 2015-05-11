@@ -195,35 +195,49 @@ def subtraction(newIm, newIm2):
   
    return subtracted
 
-def convolution(subtracted, threshold = 99): 
+def convolution(subtracted, threshold = .9): 
    numberRows, numberColumns, numberBands, dataType = ipcv.dimensions(subtracted)
    response = numpy.zeros((numberRows, numberColumns))
    numIncorrect = numpy.zeros((numberRows, numberColumns))
-   histogram = numpy.zeros((25, 1))
+   #histogram = numpy.zeros((25,1))
    box = numpy.zeros((12, 12))
-   
+
+   subtracted = cv2.cvtColor(subtracted, cv.CV_BGR2GRAY)   
    subtracted[subtracted <= 200] = 0
    subtracted[subtracted > 200] = 255
+   cv2.imwrite('subtractedIm.tif', subtracted)
 
-   subtracted = cv2.cvtColor(subtracted, cv.CV_BGR2GRAY)
+   box = box * 1.0 
+   subtracted = subtracted * 1.0 
+   
+   maxCount = numpy.max(subtracted)
+   
+   subtracted = (maxCount - subtracted) / maxCount
+   box = (maxCount - box) / maxCount
 	 
    #applying 2D filter
    #For questions 1-25 (first column)
-   column = 72
-   newIm = scantron
-   for answer in range(5): 
-      row = 385 
-      for question in range(25):
-         response[:, :] = (cv2.filter2D(subtracted, -1, box))         
-         #if response is less than threshold a match does not occur
-         numIncorrect[response[:, :] < threshold] = 0
+   for row in range(numberRows):
+      for column in range(numberColumns):
+         if row < 385 or column < 72:
+	    response = 0
+	 else:
+	    response = cv2.filter2D(subtracted, -1, box)
+         #if response is less than the threshold, a match does not occur    	  
+         numIncorrect[response < threshold] = 0
          #if response is greater than/equal to the threshold, a match occurs
-         numIncorrect[response[:, :] >= threshold] = 1
-         row = row + 12
-      column = column + 12
+         numIncorrect[response >= threshold] = 1
+   print numIncorrect
+         
+   """response = (cv2.filter2D(subtracted, -1, box))
+   print numpy.max(response)       
+   #if response is less than threshold a match does not occur
+   numIncorrect[response < threshold] = 0
+   #if response is greater than/equal to the threshold, a match occurs
+   numIncorrect[response >= threshold] = 1
    histogram = numpy.sum(numIncorrect) 
-   print histogram
-   return 0, histogram    
+   print histogram"""
+   return numIncorrect    
 
 
 if __name__ == '__main__':
@@ -248,24 +262,24 @@ if __name__ == '__main__':
    newIm = grading(scantron)
    newIm2 = answers(key)
    subtracted = subtraction(newIm, newIm2)
-   histogram = convolution(subtracted, threshold = .99)
+   numIncorrect = convolution(subtracted, threshold = .9)
 
    cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('subtracted', subtracted)
    cv2.waitKey()
-   cv2.imwrite('subtracted.tif', subtracted)
+   #cv2.imwrite('subtracted.tif', subtracted)
    
    cv2.namedWindow('gradedKey', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('gradedKey', newIm)
    cv2.waitKey()
-   cv2.imwrite('gradedKey.tif', newIm)
+   #cv2.imwrite('gradedKey.tif', newIm)
      
    cv2.namedWindow('graded', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('graded', newIm2)
    cv2.waitKey()
-   cv2.imwrite('graded.tif', newIm2)
+   #cv2.imwrite('graded.tif', newIm2)
 
-   # Display the results to the user
+   """# Display the results to the user
    maximum = numpy.amax(histogram) + 1
    matplotlib.pyplot.figure()
    matplotlib.pyplot.xlabel('choice')
@@ -274,4 +288,4 @@ if __name__ == '__main__':
    matplotlib.pyplot.ylim([0, maximum])
    matplotlib.pyplot.plot(histogram, color='b')
    matplotlib.pyplot.suptitle('Number of wrong answers', fontsize=14, fontweight='bold')
-   matplotlib.pyplot.show()
+   matplotlib.pyplot.show()"""
