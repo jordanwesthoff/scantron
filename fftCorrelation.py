@@ -79,5 +79,5 @@ if __name__ == '__main__':
    fiducial1C = cv2.imread('fiducial1.tif')
    fiducial2C = cv2.imread('fiducial2.tif')
    fiducial3C = cv2.imread('fiducial3.tif')
-   blankSheetC = cv2.imread('blackDPI0001.tif')
+   blankSheetC = cv2.imread('answerSheet1.tif')
    fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC)

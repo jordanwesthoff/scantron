@@ -12,3 +12,6 @@ from fftCorrelation2 import *
 from paddingFiducials import *
 from scan_main import *
 from register import *
+from gradingCopy import *
+from paddingCopy import *
+from fftCopy import *

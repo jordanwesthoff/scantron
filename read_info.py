@@ -6,6 +6,7 @@ import cv
 def read_info(sheets, original):
 #   original = cv2.cvtColor(original,cv.CV_BGR2GRAY)
 #   sheets = cv2.cvtColor(sheets,cv.CV_BGR2GRAY)
+   
    hood = numpy.ones((12,12))
    numRows, numCols, numBands, dtype = ipcv.dimensions(original)
 #   original = numpy.absolute(original - sheets)
@@ -23,10 +24,6 @@ def read_info(sheets, original):
       row = 51
       for L  in range(26):
          hood = original[row:row + hrow,col:col +hcol]
-       #  print 'hood', numpy.mean(hood)
-        # if numpy.mean(hood) < 180:
- #        im,threshold = ipcv.otsu_threshold(hood,255, verbose=False)
-         #print 'thresh', threshold
          if numpy.mean(hood) < 185:
             total = 0
          else:
@@ -38,8 +35,8 @@ def read_info(sheets, original):
          if L == 6:
             row = row-1
        #  print 'row',row
-         cv2.imshow('hood',hood)
-         cv2.waitKey(600)
+       #  cv2.imshow('hood',hood)
+       #  cv2.waitKey(600)
       val = (letter[numpy.argmin(letter)])
       #val = (letter[numpy.argmin(letter)])
       print 'lastval',val
@@ -55,6 +52,7 @@ def read_info(sheets, original):
          lastName.append(chr(numpy.argmin(letter)+65))
       col = col + hcol 
    print 'lastname',lastName
+   
    '''
    hood = numpy.ones((9,10))
    numRows, numCols, numBands, dtype = ipcv.dimensions(original)
@@ -109,12 +107,15 @@ def read_info(sheets, original):
   # print 'row',row
   # print 'col',col
    
-
+   '''
+   hood = numpy.ones((9,10))
    firstName = [] 
    drow = 3
    dcol = 2
    hcol = 10
    hrow = 9
+#   hcol = 12
+#   hrow = 12
    col = 235
    cv2.namedWindow('hood')
    letter = numpy.zeros((26,1))
@@ -122,19 +123,33 @@ def read_info(sheets, original):
       row = 51
       for L  in range(26):
          hood = original[row:row + hrow,col:col +hcol]
+#       #  if numpy.mean(hood) < 185:
+#         if (numpy.mean(hood)< 175 and numpy.mean(hood) <185):
+#      #   if numpy.mean(hood) < 175:
+#            total = 0
+#         else:
+#            total = 255
          total = numpy.sum(hood)
          letter[L] = total
-         row = row + drow +hrow
+#         row = row +hrow
+         row = row +hrow + drow
          if L == 6:
             row = row-1
+         cv2.imshow('hood',hood)
+#         cv2.waitKey(600)
       val = (letter[numpy.argmin(letter)])
+      print 'location', numpy.argmin(letter)
+      print 'firstval',val
       mean = numpy.mean(letter)
+ #     print'mean', mean
       if mean - 9000 < val < mean + 9000:
+#      if val > 0:
          firstName.append(chr(32))
+     
          
       else:
          firstName.append(chr(numpy.argmin(letter)+65))
-     # firstName[C] = numpy.argmax(letter)
+#      col = col + hcol 
       col = col + hcol + dcol
    print 'firstname',firstName
    
@@ -159,7 +174,7 @@ def read_info(sheets, original):
             row = row-1
       mean = numpy.mean(letter)
       val = (letter[numpy.argmin(letter)])
-      if mean - 9000 < val < mean + 9000:
+      if mean - 5000 < val < mean + 5000:
          UID.append(chr(32))
       else:
          UID.append(numpy.argmin(letter))
@@ -197,7 +212,7 @@ def read_info(sheets, original):
    print 'add', additional
 
    return lastName,firstName,UID,additional
-   '''
+   
 if __name__ == '__main__':
    
    import cv2
@@ -205,6 +220,7 @@ if __name__ == '__main__':
  #  import scantron
 #   filename = 'reg0000.tif'
 #   filename = 'reg0002.tif'
+#   filename = 'reg0007.tif'
 #   filename = 'rot0000.tif'
 #   filename = 'rot0001.tif'
 #   filename = 'rot0002.tif'
@@ -212,8 +228,8 @@ if __name__ == '__main__':
 #   filename = 'rot0004.tif'
 #   filename = 'rot0005.tif'
 #   filename = 'rot0006.tif'
-   filename = 'rot0007.tif'
-#   filename = 'rot0008.tif'
+#   filename = 'rot0007.tif'
+   filename = 'rot0008.tif'
   # filename = 'answer_sheets.pdf'
   # blank = 'original.tif'
    blank = 'paddedBlank.tif'

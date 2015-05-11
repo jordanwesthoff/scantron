@@ -9,6 +9,14 @@ def register(fid1,fid2,fid3,image, blank):
    blank2row, blank2col = ipcv.fftCorrelation2(fid2,blank)
    blank3row, blank3col = ipcv.fftCorrelation2(fid3,blank)
 
+   print 'blank1row', blank1row
+   print 'blank1col', blank1col
+   print 'blank2row', blank2row
+   print 'blank2col', blank2col
+   print 'blank3row', blank3row
+   print 'blank3col', blank3col
+  
+
    #blankfid1 = numpy.array([738,60])
    #blankfid2 = numpy.array([738,542])
    #blankfid3 = numpy.array([53,556])
@@ -23,7 +31,7 @@ def register(fid1,fid2,fid3,image, blank):
    print 'fid1col', fid1col
    print 'fid2row', fid2row
    print 'fid2col', fid2col
-   print 'fid2row', fid2row
+   print 'fid3row', fid3row
    print 'fid3col', fid3col
    '''
    numRowsIm, numColsIm, numBandsIm, dataTypeIm = ipcv.dimensions(image)
@@ -50,7 +58,7 @@ def register(fid1,fid2,fid3,image, blank):
    cv2.imshow('rot',regIm.astype(numpy.uint8))
    cv2.waitKey()
 
-   cv2.imwrite('reg0007.tif', regIm.astype(numpy.uint8))
+   #cv2.imwrite('reg0007.tif', regIm.astype(numpy.uint8))
 
    return regIm
 if __name__ == '__main__':
@@ -59,7 +67,7 @@ if __name__ == '__main__':
    fid2 = 'fiducial2.tif'
    fid3 = 'fiducial3.tif'
    #image = 'test0002rot.tif'
-   image = 'answerSheet1.tif'
+   image = 'reg0007.tif'
    image2 = 'test0004.tif'
    image3 = 'test0000.tif'
    image4 = 'test0008.tif'
