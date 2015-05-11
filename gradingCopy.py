@@ -217,22 +217,68 @@ def convolution(subtracted, threshold = .9):
    answerRegion[answerRegion > 200] = 255
    
    count = 0
-   cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
-   for row in range(numberRowsR):
+   #cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
+   #for row in range(numberRowsR):
+   for row in range(25):
       row = row * 12
       neighborhood = answerRegion[row : row + 12, 0:numberColumnsR]
-      cv2.imshow('hood', neighborhood)
-      cv2.waitKey()
+      #cv2.imshow('hood', neighborhood)
+      #cv2.waitKey(300)
       print neighborhood.shape
-      if numpy.mean(neighborhood) >= 255:
+      if numpy.mean(neighborhood) >= 254:
 	 count = count + 1
          print count
       else:
          count = count + 0
       row = row + 12           
    print count
-   return count    
+   count1 = count
+   
+   #column 2
+   answerRegion = subtracted[numberRows-407:numberRows-107, numberColumns-464:numberColumns-404]
+   cv2.imshow('region', answerRegion)
+   cv2.waitKey()
+   
+   numberRowsR, numberColumnsR, numberBandsR, dataType = ipcv.dimensions(answerRegion)
+   
+   if numberBandsR == 3:
+      answerRegion = cv2.cvtColor(answerRegion,cv.CV_BGR2GRAY)
 
+   answerRegion[answerRegion <= 200] = 0
+   answerRegion[answerRegion > 200] = 255
+   
+   count = 0
+   #cv2.namedWindow('hood', cv2.WINDOW_AUTOSIZE)
+   for row in range(25):
+      row = row * 12
+      neighborhood = answerRegion[row : row + 12, 0:numberColumnsR]
+      #cv2.imshow('hood', neighborhood)
+      #cv2.waitKey(300)
+      print neighborhood.shape
+      if numpy.mean(neighborhood) >= 254:
+	 count = count + 1
+         print count
+      else:
+         count = count + 0
+      row = row + 12          
+   print count
+   count2 = count
+   
+   count = count1 + count2 
+   print count
+   
+   return count    
+   
+def finalGrade(count):
+   
+   numberQuestions = 25 * 1.0 
+   numberRight = count * 1.0
+   print numberRight 
+   
+   percent = (numberRight / numberQuestions) * 100
+   
+   print percent
+   return percent
 
 if __name__ == '__main__':
 
@@ -257,6 +303,7 @@ if __name__ == '__main__':
    newIm2 = answers(key)
    subtracted = subtraction(newIm, newIm2)
    count = convolution(subtracted, threshold = .9)
+   percent = finalGrade(count)
 
    #cv2.namedWindow('subtracted', cv2.WINDOW_AUTOSIZE)
    #cv2.imshow('subtracted', subtracted)
