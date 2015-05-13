@@ -39,9 +39,9 @@ def read_info(sheets, original):
        #  cv2.waitKey(600)
       val = (letter[numpy.argmin(letter)])
       #val = (letter[numpy.argmin(letter)])
-      print 'lastval',val
+      #print 'lastval',val
       mean = numpy.mean(letter)
-      print 'mean', mean
+      #print 'mean', mean
       #if mean - 1 < val < mean + 1:
       if val > 0:
       #if mean - 9000 < val < mean + 9000:
@@ -135,11 +135,11 @@ def read_info(sheets, original):
          row = row +hrow + drow
          if L == 6:
             row = row-1
-         cv2.imshow('hood',hood)
+         #cv2.imshow('hood',hood)
 #         cv2.waitKey(600)
       val = (letter[numpy.argmin(letter)])
-      print 'location', numpy.argmin(letter)
-      print 'firstval',val
+      #print 'location', numpy.argmin(letter)
+      #print 'firstval',val
       mean = numpy.mean(letter)
  #     print'mean', mean
       if mean - 9000 < val < mean + 9000:
@@ -190,7 +190,7 @@ def read_info(sheets, original):
    hcol = 10
    hrow = 9
    col = 370
-   cv2.namedWindow('hood')
+   #cv2.namedWindow('hood')
    letter = numpy.zeros((10,1))
    for C in range(9):
       row = 218
@@ -229,7 +229,7 @@ if __name__ == '__main__':
 #   filename = 'rot0005.tif'
 #   filename = 'rot0006.tif'
 #   filename = 'rot0007.tif'
-   filename = 'rot0008.tif'
+   filename = 'new0001.tif'
   # filename = 'answer_sheets.pdf'
   # blank = 'original.tif'
    blank = 'paddedBlank.tif'
@@ -238,5 +238,5 @@ if __name__ == '__main__':
    original = cv2.imread(filename)
   # original = cv2.imread(blank)
    sheets = cv2.imread(blank)
-   test = read_info(sheets,original)
+   lastName, firstName, UID, additional = read_info(sheets,original)
 

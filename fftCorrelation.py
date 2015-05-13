@@ -36,8 +36,33 @@ def fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC):
    freqFid1 = numpy.fft.fft2(fiducial3)
    freqBlank = numpy.fft.fft2(blankSheet)
 
+   freqFid1 = numpy.fft.fftshift(freqFid1)
+   freqBlank = numpy.fft.fftshift(freqBlank)
+
    magFid1 = numpy.absolute(freqFid1)
    magBlank = numpy.absolute(freqBlank)
+
+   #Takes the log of the magnitude frequency image in order to diplay it
+   logMagnitude = numpy.log10(magFid1)
+   #Scales the image in order to display
+   scaledIm = logMagnitude/numpy.max(logMagnitude)
+   scaledIm2 = scaledIm * 255
+   intScaledIm2 = scaledIm2.astype(numpy.uint8)
+   cv2.namedWindow('fftFiducial', cv2.WINDOW_AUTOSIZE)
+   cv2.imshow('fftFiducial', intScaledIm2)
+   cv2.waitKey()
+   cv2.imwrite('fftFiducial.tif', intScaledIm2)
+
+   #Takes the log of the magnitude frequency image in order to diplay it
+   logMagnitude1 = numpy.log10(magBlank)
+   #Scales the image in order to display
+   scaledIm1 = logMagnitude/numpy.max(logMagnitude1)
+   scaledIm21 = scaledIm1 * 255
+   intScaledIm21 = scaledIm21.astype(numpy.uint8)
+   cv2.namedWindow('fftBlank', cv2.WINDOW_AUTOSIZE)
+   cv2.imshow('fftBlank', intScaledIm21)
+   cv2.waitKey()
+   cv2.imwrite('fftBlank.tif', intScaledIm21)
 
    phaseFid1 = numpy.angle(freqFid1)
    phaseBlank = numpy.angle(freqBlank)
@@ -60,13 +85,13 @@ def fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC):
    displayIm = cv2.merge((blankSheet, blankSheet, blankSheet))
    print rowLoc, colLoc
 
-   displayIm[rowLoc - 1:rowLoc+2, colLoc-1:colLoc+2, 2] = 0
-   displayIm[rowLoc-1:rowLoc+2, colLoc-1:colLoc+2, 0:1] = 255
+   displayIm[rowLoc - 2:rowLoc+3, colLoc-2:colLoc+3, 2] = 0
+   displayIm[rowLoc-2:rowLoc+3, colLoc-2:colLoc+3, 0:1] = 255
 
    cv2.namedWindow('displayIm', cv2.WINDOW_AUTOSIZE)
    cv2.imshow('displayIm', displayIm)
    cv2.waitKey()
-   cv2.imwrite('dotsInCir3.tif', displayIm)
+   cv2.imwrite('dotsFid3.tif', displayIm)
    '''
    fftFid1 = numpy.fft.ifftshift(centerFreqFid1)
    fftBlank = numpy.fft.ifftshift(centerFreqBlank)
@@ -79,5 +104,5 @@ if __name__ == '__main__':
    fiducial1C = cv2.imread('fiducial1.tif')
    fiducial2C = cv2.imread('fiducial2.tif')
    fiducial3C = cv2.imread('fiducial3.tif')
-   blankSheetC = cv2.imread('answerSheet1.tif')
+   blankSheetC = cv2.imread('original.tif')
    fftCorrelation(fiducial1C, fiducial2C, fiducial3C, blankSheetC)

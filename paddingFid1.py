@@ -24,6 +24,9 @@ def paddingFid1(answerSheet1, blankSheet1):
 
    numRowsAN, numColsAN, numBandsAN, dataTypeAN = ipcv.dimensions(answerSheet)
 
+   print numRowsB, numColsB
+   print numRowsAN, numColsAN
+
    pad_height1 = numpy.absolute(numRowsAN - numRowsF1)/2.0
    pad_width1 = numpy.absolute(numColsAN - numColsF1)/2.0
    maxCount = numpy.max(blankSheet)
@@ -36,6 +39,10 @@ def paddingFid1(answerSheet1, blankSheet1):
       fiducial1 = numpy.pad(fiducial1a,((pad_height1, pad_height1 + 1),(pad_width1, pad_width1)), 'constant', constant_values = ((maxCount, maxCount),(maxCount,maxCount)))
    else:
       fiducial1 = numpy.pad(fiducial1a,((pad_height1, pad_height1 + 1),(pad_width1, pad_width1 + 1)), 'constant', constant_values = ((maxCount, maxCount),(maxCount,maxCount)))
+   
+   numRowsF, numColsF, numBandsF, dataTypeF = ipcv.dimensions(fiducial1)
+   print numRowsF, numColsF
+   cv2.imwrite('fiducial1.tif', fiducial1)
 
    return fiducial1
 

@@ -224,14 +224,14 @@ def convolution(subtracted, threshold = .9):
       neighborhood = answerRegion[row : row + 12, 0:numberColumnsR]
       #cv2.imshow('hood', neighborhood)
       #cv2.waitKey(300)
-      print neighborhood.shape
+      #print neighborhood.shape
       if numpy.mean(neighborhood) >= 254:
 	 count = count + 1
-         print count
+         #print count
       else:
          count = count + 0
       row = row + 12           
-   print count
+   #print count
    count1 = count
    
    #column 2
@@ -254,18 +254,18 @@ def convolution(subtracted, threshold = .9):
       neighborhood = answerRegion[row : row + 12, 0:numberColumnsR]
       #cv2.imshow('hood', neighborhood)
       #cv2.waitKey(300)
-      print neighborhood.shape
+      #print neighborhood.shape
       if numpy.mean(neighborhood) >= 254:
 	 count = count + 1
-         print count
+         #print count
       else:
          count = count + 0
       row = row + 12          
-   print count
+   #print count
    count2 = count
    
    count = count1 + count2 
-   print count
+   #print count
    
    return count    
    
@@ -273,7 +273,7 @@ def finalGrade(count):
    
    numberQuestions = 50 * 1.0 
    numberRight = count * 1.0
-   print numberRight 
+   #print numberRight 
    
    percent = (numberRight / numberQuestions) * 100
    
@@ -287,7 +287,7 @@ if __name__ == '__main__':
    import cv2
    
    key = 'rot0000.tif'
-   scantron = 'rot0001.tif' 
+   scantron = 'new0001.tif' 
    
    scantron = cv2.imread(scantron, cv2.CV_LOAD_IMAGE_UNCHANGED)
    #cv2.namedWindow('filename', cv2.WINDOW_AUTOSIZE)

@@ -46,6 +46,7 @@ def read_in_files(pdf,blank):
    
 if __name__ == '__main__':
 
+   #filename = 'reference_guppy.pdf'
    filename = 'answer_sheets.pdf'
    blank = 'original_scan_sheet.pdf'
    im = read_in_files(filename,blank)

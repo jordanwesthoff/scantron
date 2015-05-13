@@ -36,7 +36,10 @@ def paddingFid3(answerSheet1, blankSheet1):
       fiducial3 = numpy.pad(fiducial3a,((pad_height3, pad_height3 + 1),(pad_width3, pad_width3)), 'constant', constant_values = ((maxCount, maxCount),(maxCount,maxCount)))
    else:
       fiducial3 = numpy.pad(fiducial3a,((pad_height3, pad_height3 + 1),(pad_width3, pad_width3 + 1)), 'constant', constant_values = ((maxCount, maxCount),(maxCount,maxCount)))
-   
+  
+
+   cv2.imwrite('fiducial3.tif', fiducial3)
+
    return fiducial3
 
 if __name__ == '__main__':
